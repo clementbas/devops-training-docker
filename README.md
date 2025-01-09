@@ -69,4 +69,9 @@
 
     docker run -d -p 80:80 --name my-apache-container my-apache-image
 
-4.c - 
+4.c - Quelles différences observez-vous entre les questions 3. et 4., trouvez les avantages & inconvénients de chaque procédure (mount volume VS copy) :
+
+| Aspect | Procédure 3 (mount volume) | Procédure 4 (copy avec Dockerfile) |
+|:--------------:|:-------------:|:--------------:|
+| Création d'image | Pas d'image personnalisée, utilisation directe de l'image existante (httpd). | Crée une image personnalisée à partir d’un Dockerfile. |
+| Complexité | Simple à mettre en place pour un développement rapide. | Nécessite de comprendre et d’écrire un Dockerfile, ainsi que de construire une image. |
