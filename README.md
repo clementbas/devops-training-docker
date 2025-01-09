@@ -75,3 +75,53 @@
 |:--------------:|:-------------:|:--------------:|
 | Création d'image | Pas d'image personnalisée, utilisation directe de l'image existante (httpd). | Crée une image personnalisée à partir d’un Dockerfile. |
 | Complexité | Simple à mettre en place pour un développement rapide. | Nécessite de comprendre et d’écrire un Dockerfile, ainsi que de construire une image. |
+
+## Docker run only
+
+### Utiliser une base de données dans un container docker
+
+5.a - Récupérer les images mysql (ou mariadb) et phpmyadmin/phpymyadmin depuis le Docker Hub :
+    
+  1. récupérer l'image mysql ou mariadb:
+
+    docker pull mysql:latest
+    docker pull mariadb:latest
+
+  2. récupérer l'image phpmyadmin/phpymyadmin :
+
+    docker pull phpmyadmin/phpmyadmin:latest
+
+  3. vérifier si les images sont bien téléchargées :
+
+    docker images
+
+5.b - Exécuter 2 containers à partir des images lancer le phpmyadmin (conteuneurisé et publié sur un port) et ajoutez une table via l'interface
+
+  1. créer un réseau docker :
+
+    docker network create my_network
+
+  2. lancer le container MySQL :
+
+    docker run -d --name mysql-container --network my_network -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=my_database mysql:latest
+
+  3. lancer le container phpMyAdmin :
+
+    docker run -d --name phpmyadmin-container --network my_network -e PMA_HOST=mysql-container -p 8080:80 phpmyadmin/phpmyadmin:latest
+
+  4. ouvrir un navigateur et aller sur http://localhost:8080
+
+  5. se connecter avec les identifiants :
+
+     - Nom d'utilisateur : root
+     - Mot de passe  : rootpassword
+
+  6. Une fois connecter sélectionner la base de données my_database et créer une table :
+
+    # Exemple de table user
+    CREATE TABLE user (
+    id_user INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    mdp VARCHAR(255) NOT NULL
+    );
