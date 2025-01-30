@@ -55,8 +55,4 @@ app.use((err, req, res, next) => { // Error handler
     next();
 });
 
-app.listen(3000, () => { // Start the server
-    console.log('Server is running on http://localhost:3001'); // Log a message
-});
-
 export default app;
