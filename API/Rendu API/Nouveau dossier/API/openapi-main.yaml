@@ -1,0 +1,2150 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: This is the API documentation for the application.
+
+servers:
+  - url: http://localhost:3001
+    description: Local server
+    
+paths:
+  /users/email/{email}:
+    get:
+      tags:
+        - Users
+          - Admin
+      operationId: getUserByEmail
+      summary: "Get user by email"
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User found
+        '404':
+          description: User not found
+  /users/{id}:
+    get:
+      tags:
+          - Users
+            - Admin
+      operationId: getUserById
+      summary: "Get user by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User found
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - Users
+          - Admin
+      operationId: deleteUser
+      summary: "Delete user by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User deleted
+        '404':
+          description: User not found
+    put:
+      tags:
+        - Users
+          - Admin
+      operationId: updateUser
+      summary: "Update user by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                firstname:
+                  type: string
+                adress:
+                  type: string
+                birthdate:
+                  type: string
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  firstname:
+                    type: string
+                  email:
+                    type: string
+                  birthdate:
+                    type: string
+        '400':
+          description: Invalid user data
+        '404':
+          description: User not found
+  /users:
+    get:
+      tags:
+        - Users
+          - Admin
+      operationId: listUsers
+      summary: "List all users"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of users
+    post:
+      tags:
+        - Users
+          - Admin
+      operationId: createUser
+      summary: "Create a new user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, firstname, email, adress, birthdate, password]
+              properties:
+                name:
+                  type: string
+                firstname:
+                  type: string
+                email:
+                  type: string
+                adress:
+                  type: string
+                birthdate:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User created
+  /books/title/{title}:
+    get:
+      tags:
+        - Books
+          - User
+      operationId: getBookByTitle
+      summary: "Get book by title"
+      parameters:
+        - name: title
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book found
+        '404':
+          description: Book not found
+  /books/{id}:
+    get:
+      tags:
+        - Books
+          - User
+      operationId: getBookById
+      summary: "Get book by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Book found
+        '404':
+          description: Book not found
+    delete:
+      tags:
+        - Books
+          - Admin
+      operationId: deleteBook
+      summary: "Delete book by ID"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Book deleted
+        '404':
+          description: Book not found
+    put:
+      tags:
+        - Books
+          - Admin
+      operationId: updateBook
+      summary: "Update book by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                publication:
+                  type: string
+                description:
+                  type: string
+                category:
+                  type: integer
+                author:
+                  type: integer
+                publisher:
+                  type: integer
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  publication:
+                    type: string
+                  description:
+                    type: string
+                  category:
+                    type: string
+                  author:
+                    type: string
+                  publisher:
+                    type: string
+        '400':
+          description: Invalid book data
+        '404':
+          description: Book not found
+  /books:
+    get:
+      tags:
+        - Books
+          - User
+      operationId: listBooks
+      summary: "List all books"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of books
+    post:
+      tags:
+        - Books
+          - Admin
+      operationId: createBook
+      summary: "Create a new book"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, publication, description, id_category, id_author, id_publisher]
+              properties:
+                title:
+                  type: string
+                publication:
+                  type: string
+                description:
+                  type: string
+                id_category:
+                  type: integer
+                id_author:
+                  type: integer
+                id_publisher:
+                  type: integer
+      responses:
+        '200':
+          description: Book created
+  /authors:
+    get:
+      tags:
+      - Authors
+        - User
+      operationId: listAuthors
+      summary: "List all authors"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of authors
+    post:
+      tags:
+      - Authors
+        - Admin
+      operationId: createAuthor
+      summary: "Create a new author"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullname, birthdate]
+              properties:
+                fullname:
+                  type: string
+                birthdate:
+                  type: string
+                deathdate:
+                  type: string
+      responses:
+        '200':
+          description: Author created          
+  /authors/{id}:
+    get:
+      tags:
+      - Authors
+        - User
+      operationId: getAuthorById
+      summary: "Get author by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Author found
+        '404':
+          description: Author not found
+    delete:
+      tags:
+      - Authors
+        - Admin
+      operationId: deleteAuthor
+      summary: "Delete author by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Author deleted
+        '404':
+          description: Author not found
+    put:
+      tags:
+      - Authors
+        - Admin
+      operationId: updateAuthor
+      summary: "Update author by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+                birthdate:
+                  type: string
+                deathdate:
+                  type: string
+      responses:
+        '200':
+          description: Author updated successfully
+        '400':
+          description: Invalid author data
+        '404':
+          description: Author not found
+
+  /authors/fullname/{fullname}:
+    get:
+      tags:
+      - Authors
+        - User
+      operationId: getAuthorByFullname
+      summary: "Get author by fullname"
+      parameters:
+        - name: fullname
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Author found
+        '404':
+          description: Author not found
+  /auth/login:
+    post:
+      tags:
+        - Auth
+          - User
+      operationId: login
+      summary: "Login a user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in
+        '400':
+          description: Invalid credentials
+  /auth/signup:
+    post:
+      tags:
+      - Auth
+        - User
+      operationId: signup
+      summary: "Signup a new user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - firstname
+                - email
+                - adress
+                - birthdate
+                - password
+              properties:
+                name:
+                  type: string
+                firstname:
+                  type: string
+                email:
+                  type: string
+                adress:
+                  type: string
+                birthdate:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User signed up
+        '400':
+          description: Invalid data
+  /publisher:
+    get:
+      tags:
+        - Publisher
+          - User
+      operationId: listPublishers
+      summary: "List all publishers"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of publishers
+    post:
+      tags:
+        - Publisher
+          - Admin
+      operationId: createPublisher
+      summary: "Create a new publisher"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, adress, website]
+              properties:
+                name:
+                  type: string
+                adress:
+                  type: string
+                website:
+                  type: string
+      responses:
+        '200':
+          description: Publisher created
+  /publisher/{id}:
+    get:
+      tags:
+        - Publisher
+          - User
+      operationId: getPublisherById
+      summary: "Get publisher by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publisher found
+        '404':
+          description: Publisher not found
+    delete:
+      tags:
+        - Publisher
+          - Admin
+      operationId: deletePublisher
+      summary: "Delete publisher by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publisher deleted
+        '404':
+          description: Publisher not found
+    put:
+      tags:
+        - Publisher
+          - Admin
+      operationId: updatePublisher
+      summary: "Update publisher by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                adress:
+                  type: string
+                website:
+                  type: string
+      responses:
+        '200':
+          description: Publisher updated successfully
+        '400':
+          description: Invalid publisher data
+        '404':
+          description: Publisher not found
+  /publisher/name/{name}:
+    get:
+      tags:
+        - Publisher
+          - User
+      operationId: getPublisherByName
+      summary: "Get publisher by name"
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Publisher found
+        '404':
+          description: Publisher not found
+  /category:
+    get:
+      tags:
+        - Category
+          - User
+      operationId: listCategories
+      summary: "List all categories"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of categories
+    post:
+      tags:
+        - Category
+          - Admin
+      operationId: createCategory
+      summary: "Create a new category"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, description]
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Category created
+  /category/{id}:
+    get:
+      tags:
+        - Category
+          - User
+      operationId: getCategoryById
+      summary: "Get category by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Category found
+        '404':
+          description: Category not found
+    delete:
+      tags:
+        - Category
+          - Admin
+      operationId: deleteCategory
+      summary: "Delete category by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Category deleted
+        '404':
+          description: Category not found
+    put:
+      tags:
+        - Category
+          - Admin
+      operationId: updateCategory
+      summary: "Update category by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Category updated successfully
+        '400':
+          description: Invalid category data
+        '404':
+          description: Category not found
+  /category/name/{name}:
+    get:
+      tags:
+        - Category
+          - User
+      operationId: getCategoryByName
+      summary: "Get category by name"
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category found
+        '404':
+          description: Category not found
+  /reason:
+    get:
+      tags:
+        - Reason
+          - Admin
+      operationId: listReasons
+      summary: "List all reasons"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of reasons
+    post:
+      tags:
+        - Reason
+          - Admin
+      operationId: createReason
+      summary: "Create a new reason"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [label, description]
+              properties:
+                label:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Reason created
+  /reason/{id}:
+    get:
+      tags:
+        - Reason
+          - Admin
+      operationId: getReasonById
+      summary: "Get reason by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reason found
+        '404':
+          description: Reason not found
+    delete:
+      tags:
+        - Reason
+          - Admin
+      operationId: deleteReason
+      summary: "Delete reason by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reason deleted
+        '404':
+          description: Reason not found
+    put:
+      tags:
+        - Reason
+          - Admin
+      operationId: updateReason
+      summary: "Update reason by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Reason updated successfully
+        '400':
+          description: Invalid reason data
+        '404':
+          description: Reason not found
+  /reason/label/{label}:
+    get:
+      tags:
+        - Reason
+          - Admin
+      operationId: getReasonByLabel
+      summary: "Get reason by label"
+      parameters:
+        - name: label
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reason found
+        '404':
+          description: Reason not found
+  /bill:
+    get:
+      tags:
+        - Bill
+          - Admin
+      operationId: listBills
+      summary: "List all bills"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of bills
+    post:
+      tags:
+        - Bill
+          - Admin
+      operationId: createBill
+      summary: "Create a new bill"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id_user, id_reason, amount, payment_date, status]
+              properties:
+                id_user:
+                  type: integer
+                id_reason:
+                  type: integer
+                amount:
+                  type: number
+                payment_date:
+                  type: string
+                status:
+                  type: string
+      responses:
+        '200':
+          description: Bill created
+        '400':
+          description: Error creating bill
+  /bill/{id}:
+    get:
+      tags:
+        - Bill
+          - Admin
+      operationId: getBillById
+      summary: "Get bill by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bill found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  amount:
+                    type: number
+                  payment_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  reason:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      label:
+                        type: string
+                      description:
+                        type: string
+        '404':
+          description: Bill not found
+        '400':
+          description: Error retrieving bill
+    delete:
+      tags:
+        - Bill
+          - Admin
+      operationId: deleteBillById
+      summary: "Delete bill by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bill deleted
+        '404':
+          description: Bill not found
+        '400':
+          description: Error deleting bill
+    put:
+      tags:
+        - Bill
+          - Admin
+      operationId: updateBill
+      summary: "Update bill by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_user:
+                  type: integer
+                id_reason:
+                  type: integer
+                amount:
+                  type: number
+                payment_date:
+                  type: string
+                status:
+                  type: string
+      responses:
+        '200':
+          description: Bill updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  amount:
+                    type: number
+                  payment_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  reason:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      label:
+                        type: string
+                      description:
+                        type: string
+        '400':
+          description: Invalid bill data
+        '404':
+          description: Bill not found
+  /bill/user/{userId}:
+    get:
+      tags:
+        - Bill
+          - Admin
+      operationId: getBillByUserId
+      summary: "Get bills by user ID"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bills found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    amount:
+                      type: number
+                    payment_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reason:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        description:
+                          type: string
+        '404':
+          description: No bills found for the given user
+        '400':
+          description: Error retrieving bills
+  /bill/reason/{reasonId}:
+    get:
+      tags:
+        - Bill
+          - Admin
+      operationId: getBillByReasonId
+      summary: "Get bills by reason ID"
+      parameters:
+        - name: reasonId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bills found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    amount:
+                      type: number
+                    payment_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reason:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        description:
+                          type: string
+        '404':
+          description: No bills found for the given reason
+        '400':
+          description: Error retrieving bills
+  /bill/status/{status}:
+    get:
+      tags:
+        - Bill
+          - Admin
+      operationId: getBillByStatus
+      summary: "Get bills by status"
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bills found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    amount:
+                      type: number
+                    payment_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reason:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        description:
+                          type: string
+        '404':
+          description: No bills found for the given status
+        '400':
+          description: Error retrieving bills
+  /borrow:
+    get:
+      tags:
+        - Borrow
+          - Admin
+      operationId: listBorrows
+      summary: "List all borrows"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of borrows
+    post:
+      tags:
+        - Borrow
+          - Admin
+      operationId: createBorrow
+      summary: "Create a borrow"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [borrow_date, return_date, due_date, status, id_user, id_book]
+              properties:
+                borrow_date:
+                  type: string
+                return_date:
+                  type: string
+                due_date:
+                  type: string
+                status:
+                  type: string
+                id_user:
+                  type: integer
+                id_book:
+                  type: integer
+      responses:
+        '200':
+          description: Borrow created
+        '400':
+          description: Error creating borrow
+  /borrow/{id}:
+    get:
+      tags:
+        - Borrow
+          - Admin
+      operationId: getBorrowById
+      summary: "Get borrow by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Borrow found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  borrow_date:
+                    type: string
+                  return_date:
+                    type: string
+                  due_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  book:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+        '404':
+          description: Borrow not found
+        '400':
+          description: Error retrieving borrow
+    delete:
+      tags:
+        - Borrow
+          - Admin
+      operationId: deleteBorrowById
+      summary: "Delete borrow by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Borrow deleted
+        '404':
+          description: Borrow not found
+        '400':
+          description: Error deleting borrow
+    put:
+      tags:
+        - Borrow
+          - Admin
+      operationId: updateBorrow
+      summary: "Update borrow by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                borrow_date:
+                  type: string
+                return_date:
+                  type: string
+                due_date:
+                  type: string
+                status:
+                  type: string
+                id_user:
+                  type: integer
+                id_book:
+                  type: integer
+      responses:
+        '200':
+          description: Borrow updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  borrow_date:
+                    type: string
+                  return_date:
+                    type: string
+                  due_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  book:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+        '400':
+          description: Invalid borrow data
+        '404':
+          description: Borrow not found
+  /borrow/user/{userId}:
+    get:
+      tags:
+        - Borrow
+          - Admin
+      operationId: getBorrowByUserId
+      summary: "Get borrows by user ID"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Borrows found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    borrow_date:
+                      type: string
+                    return_date:
+                      type: string
+                    due_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    book:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+        '404':
+          description: No borrows found for the given user
+        '400':
+          description: Error retrieving borrows
+  /borrow/book/{bookId}:
+    get:
+      tags:
+        - Borrow
+          - Admin
+      operationId: getBorrowByBookId
+      summary: "Get borrows by book ID"
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Borrows found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    borrow_date:
+                      type: string
+                    return_date:
+                      type: string
+                    due_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    book:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+        '404':
+          description: No borrows found for the given book
+        '400':
+          description: Error retrieving borrows
+  /borrow/status/{status}:
+    get:
+      tags:
+        - Borrow
+          - Admin
+      operationId: getBorrowByStatus
+      summary: "Get borrows by status"
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Borrows found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    borrow_date:
+                      type: string
+                    return_date:
+                      type: string
+                    due_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    book:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+        '404':
+          description: No borrows found for the given status
+        '400':
+          description: Error retrieving borrows
+  /reservations:
+    get:
+      tags:
+        - Reservation
+          - Admin
+      operationId: getAllReservations
+      summary: "Get all reservations"
+      parameters:
+        - name: "sortBy"
+          in: "query"
+          description: "Sort by field"
+          required: false
+          schema:
+            type: "string"
+        - name: "sortDirection"
+          in: "query"
+          description: "Sort direction"
+          required: false
+          schema:
+            type: "string"
+            enum: ["asc", "desc"]
+      responses:
+        '200':
+          description: A list of reservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    reservation_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reservationBooks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          book:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              title:
+                                type: string
+    post:
+      tags:
+        - Reservation
+          - Admin
+      operationId: createReservation
+      summary: "Create a new reservation"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reservation_date, status, id_user, id_book]
+              properties:
+                reservation_date:
+                  type: string
+                status:
+                  type: string
+                id_user:
+                  type: integer
+                id_book:
+                  type: integer
+      responses:
+        '200':
+          description: Reservation created
+  /reservations/me:
+    post:
+      tags:
+        - Reservation
+          - User
+      operationId: createReservationForUser
+      summary: "Create a reservation for the logged-in user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookId]
+              properties:
+                bookId:
+                  type: integer
+      responses:
+        '200':
+          description: Reservation created for the logged-in user
+  /reservations/{id}:
+    get:
+      tags:
+        - Reservation
+          - Admin
+      operationId: getReservationById
+      summary: "Get reservation by ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reservation found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  reservation_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  reservationBooks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        book:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            title:
+                              type: string
+        '404':
+          description: Reservation not found
+  /reservations/accept/{id}:
+    put:
+      tags:
+        - Reservation
+          - Admin
+      operationId: acceptReservation
+      summary: "Accept a reservation"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reservation accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  reservation_date:
+                    type: string
+                  status:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  reservationBooks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        book:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            title:
+                              type: string
+        '404':
+          description: Reservation not found
+  /reservations/user/{userId}:
+    get:
+      tags:
+        - Reservation
+          - Admin
+      operationId: getReservationsByUserId
+      summary: "Get reservations by user ID"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reservations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    reservation_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reservationBooks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          book:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              title:
+                                type: string
+        '404':
+          description: No reservations found for the given user
+  /reservations/status/{status}:
+    get:
+      tags:
+        - Reservation
+          - Admin
+      operationId: getReservationsByStatus
+      summary: "Get reservations by status"
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    reservation_date:
+                      type: string
+                    status:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    reservationBooks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          book:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              title:
+                                type: string
+        '404':
+          description: No reservations found for the given status
+  /reservations/book/{bookId}:
+    get:
+      tags:
+        - Reservation
+          - Admin
+      operationId: getReservationsByBookId
+      summary: "Get reservations by book ID"
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reservations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reservation:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        reservation_date:
+                          type: string
+                        status:
+                          type: string
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            email:
+                              type: string
+        '404':
+          description: No reservations found for the given book
+  /stats/borrowed-books:
+    get:
+      summary: Get the count of borrowed books
+      description: Retrieve the number of books that are currently borrowed
+      tags:
+        - Statistics
+          - Admin
+      responses:
+        '200':
+          description: Successfully retrieved the count of borrowed books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      borrowedBooksCount:
+                        type: integer
+        '400':
+          description: Error retrieving borrowed books count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  errors:
+                    type: string
+  /stats/returned-books:
+    get:
+      summary: Get the count of returned books
+      description: Retrieve the number of books that are currently returned
+      tags:
+        - Statistics
+          - Admin
+      responses:
+        '200':
+          description: Successfully retrieved the count of returned books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      returnedBooksCount:
+                        type: integer
+        '400':
+          description: Error retrieving returned books count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  errors:
+                    type: string
+  /stats/pending-bills:
+    get:
+      summary: Get the count of pending bills
+      description: Retrieve the number of bills that are currently pending
+      tags:
+        - Statistics
+          - Admin
+      responses:
+        '200':
+          description: Successfully retrieved the count of pending bills
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      pendingBillsCount:
+                        type: integer
+        '400':
+          description: Error retrieving pending bills count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  errors:
+                    type: string
+  /stats/paid-bills:
+    get:
+      summary: Get the count of paid bills
+      description: Retrieve the number of bills that are currently paid
+      tags:
+        - Statistics
+          - Admin
+      responses:
+        '200':
+          description: Successfully retrieved the count of paid bills
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      paidBillsCount:
+                        type: integer
+        '400':
+          description: Error retrieving paid bills count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  errors:
+                    type: string
+  /stats/pending-reservations/{bookId}:
+    get:
+      summary: Get the count of pending reservations for a specific book
+      description: Retrieve the number of reservations with status "pending" for a given book ID
+      tags:
+        - Statistics
+          - Admin
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: ID of the book
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the count of pending reservations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      pendingReservationsCount:
+                        type: integer
+        '400':
+          description: Error retrieving pending reservations count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  errors:
+                    type: string

@@ -1,0 +1,126 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Reason {
+  id          Int      @id @default(autoincrement()) // Primary key
+  label       String
+  description String? // Optional field
+
+  bills       Bill[]   @relation("ReasonBills") // Relation 1-N (one-to-many) entre `Reason` et `Bill`
+}
+
+model Bill {
+  id           Int      @id @default(autoincrement())
+  id_reason    Int
+  id_user      Int
+  amount       Float
+  payment_date String?
+  status       String
+
+  reason       Reason   @relation(fields: [id_reason], references: [id], name: "ReasonBills")
+  // Relation N-1 (many-to-one) avec le modèle `Reason`. 
+  // La clé étrangère `id_reason` dans `Bill` référence la clé primaire `id` dans `Reason`.
+  // La directive `name: "ReasonBills"` relie cette relation à celle définie dans `Reason`.
+  user         User     @relation(fields: [id_user], references: [id], name: "UserBills")
+  // Relation N-1 (many-to-one) avec le modèle `User`. 
+  // La clé étrangère `id_user` dans `Bill` référence la clé primaire `id` dans `User`.
+  // Cette relation est nommée "UserBills" pour correspondre à la relation définie dans `User`.
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  password     String
+  email        String    @unique
+  firstname    String?
+  adress       String?
+  birthdate    String?
+  role         String   @default("user")
+
+  borrows      Borrow[]  @relation("UserBorrows")
+  reservations Reservation[] @relation("UserReservations")
+  bills        Bill[]    @relation("UserBills")
+}
+
+model Borrow {
+  id           Int       @id @default(autoincrement())
+  id_user      Int
+  borrow_date  String
+  return_date  String?
+  due_date     String
+  status       String
+
+  user         User      @relation(fields: [id_user], references: [id], name: "UserBorrows")
+  books        Books[]   @relation("BorrowBooks")
+}
+
+model Reservation {
+  id               Int            @id @default(autoincrement())
+  id_user          Int
+  reservation_date String
+  status           String
+
+  user             User           @relation(fields: [id_user], references: [id], name: "UserReservations")
+  reservationBooks Reservation_Books[] @relation("ReservationBooks")
+}
+
+model Reservation_Books {
+  id_reservation Int
+  id_books       Int
+
+  reservation    Reservation @relation(fields: [id_reservation], references: [id], name: "ReservationBooks")
+  book           Books       @relation(fields: [id_books], references: [id], name: "BooksReservations")
+
+  @@id([id_reservation, id_books])
+}
+
+model Author {
+  id         Int       @id @default(autoincrement())
+  fullname   String
+  birthdate  String
+  deathdate  String?
+
+  books      Books[]   @relation("AuthorBooks")
+}
+
+model Books {
+  id           Int       @id @default(autoincrement())
+  id_borrow    Int?
+  id_category  Int
+  id_author    Int
+  id_publisher Int
+  title        String    @unique
+  publication  String
+  description  String?
+  note         Float?
+  comments     String?
+
+  borrow       Borrow?   @relation(fields: [id_borrow], references: [id], name: "BorrowBooks")
+  category     Category  @relation(fields: [id_category], references: [id], name: "CategoryBooks")
+  author       Author    @relation(fields: [id_author], references: [id], name: "AuthorBooks")
+  publisher    Publisher @relation(fields: [id_publisher], references: [id], name: "PublisherBooks")
+  reservations Reservation_Books[] @relation("BooksReservations")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+
+  books       Books[]   @relation("CategoryBooks")
+}
+
+model Publisher {
+  id          Int       @id @default(autoincrement())
+  name        String
+  adress     String
+  website     String?
+
+  books       Books[]   @relation("PublisherBooks") 
+}

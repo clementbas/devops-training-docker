@@ -1,0 +1,24 @@
+-- CreateTable
+CREATE TABLE "USER" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "firstname" TEXT NOT NULL,
+    "adress" TEXT NOT NULL,
+    "phone" TEXT,
+    "email" TEXT NOT NULL,
+    "birthdate" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "BORROW" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER NOT NULL,
+    "borrowDate" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "returnDate" DATETIME,
+    "dueDate" DATETIME NOT NULL,
+    "status" TEXT NOT NULL,
+    CONSTRAINT "BORROW_userId_fkey" FOREIGN KEY ("userId") REFERENCES "USER" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "USER_email_key" ON "USER"("email");
